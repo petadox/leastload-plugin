@@ -23,7 +23,7 @@
  */
 package org.bstick12.jenkinsci.plugins.leastload;
 
-import static java.util.logging.Level.INFO;
+import static java.util.logging.Level.FINE;
 import static java.util.logging.Level.WARNING;
 import hudson.model.LoadBalancer;
 import hudson.model.AbstractProject;
@@ -88,7 +88,7 @@ public class LeastLoadBalancer extends LoadBalancer {
 	                assert m.isCompletelyValid();
 	                return m;
 	            } else {
-	            	LOGGER.log(INFO, "Least load balancer was unable to define mapping. Falling back to double check");
+	            	LOGGER.log(FINE, "Least load balancer was unable to define mapping. Falling back to double check");
 	            	return getFallBackLoadBalancer().map(task, ws);
 	            }
 	            
