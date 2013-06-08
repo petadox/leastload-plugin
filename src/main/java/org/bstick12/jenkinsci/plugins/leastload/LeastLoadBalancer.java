@@ -130,7 +130,7 @@ public class LeastLoadBalancer extends LoadBalancer {
     		@SuppressWarnings("unchecked")
     		LeastLoadDisabledProperty property = (LeastLoadDisabledProperty) project.getProperty(LeastLoadDisabledProperty.class);
             // If the job configuration hasn't been saved after installing the plugin, the property will be null. Assume
-            // that the use wants to enable functionality by default.
+            // that the user wants to enable functionality by default.
             if(property != null) {
                 return property.isLeastLoadDisabled();
             }
