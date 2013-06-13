@@ -81,7 +81,7 @@ public class LeastLoadBalancer extends LoadBalancer {
 		try {
 
 			if(!isDisabled(task)) {
-	
+				
 				List<ExecutorChunk> useableChunks = getApplicableSortedByLoad(ws);	
 	            Mapping m = ws.new Mapping();
 	            if (assignGreedily(m,useableChunks,0)) {
@@ -117,6 +117,7 @@ public class LeastLoadBalancer extends LoadBalancer {
 		    	chunks.add(ec);
 		    }
 		}
+		Collections.shuffle(chunks); // See JENKINS-18323
 		Collections.sort(chunks, EXECUTOR_CHUNK_COMPARATOR);
 		return chunks;
 		
@@ -180,9 +181,9 @@ public class LeastLoadBalancer extends LoadBalancer {
 			Computer com1 = ec1.computer;
 			Computer com2 = ec2.computer;
 			
-			if(com1.isIdle() && !com2.isIdle()) {
+			if(isIdle(com1) && !isIdle(com2)) {
 				return 1;
-			} else if (com2.isIdle() && !com1.isIdle()) {
+			} else if (isIdle(com2) && !isIdle(com1)) {
 				return -1;
 			} else {
 				return com1.countIdle() - com2.countIdle();
@@ -190,6 +191,13 @@ public class LeastLoadBalancer extends LoadBalancer {
 			
 		}
 		
+		// Can't use computer.isIdle() as it can return false when assigned
+		// a multi-configuration job even though no executors are being used
+		private boolean isIdle(Computer computer) {
+			return computer.countExecutors() - computer.countIdle() == 0 ? true : false; 
+		}
+		
 	}
+	
 	
 }
