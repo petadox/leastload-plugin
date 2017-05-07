@@ -28,19 +28,17 @@ import hudson.model.LoadBalancer;
 import jenkins.model.Jenkins;
 
 /**
- * 
  * LeastLoad plugin implementation
- * 
- * @author brendan.nolan@gmail.com
  *
+ * @author brendan.nolan@gmail.com
  */
 public class LeastLoadPlugin extends Plugin {
-		
-	@Override
-	public void start() throws Exception {
-		LoadBalancer currentLoadBalancer = Jenkins.getInstance().getQueue().getLoadBalancer();
-		LoadBalancer leastLoadBalancer = new LeastLoadBalancer(currentLoadBalancer);
-		Jenkins.getInstance().getQueue().setLoadBalancer(leastLoadBalancer);
-	}
+
+    @Override
+    public void start() throws Exception {
+        LoadBalancer currentLoadBalancer = Jenkins.getInstance().getQueue().getLoadBalancer();
+        LoadBalancer leastLoadBalancer = new LeastLoadBalancer(currentLoadBalancer);
+        Jenkins.getInstance().getQueue().setLoadBalancer(leastLoadBalancer);
+    }
 
 }
