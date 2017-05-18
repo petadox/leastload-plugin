@@ -27,7 +27,7 @@ import static java.util.logging.Level.FINE;
 import static java.util.logging.Level.WARNING;
 
 import hudson.model.LoadBalancer;
-import hudson.model.AbstractProject;
+import hudson.model.Job;
 import hudson.model.Computer;
 import hudson.model.Executor;
 import hudson.model.Queue.Task;
@@ -42,6 +42,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import com.google.common.base.Preconditions;
+import hudson.model.queue.SubTask;
 
 /**
  * A {@link LoadBalancer} implementation that the leastload plugin uses to replace the default
@@ -122,10 +123,14 @@ public class LeastLoadBalancer extends LoadBalancer {
     @SuppressWarnings("rawtypes")
     private boolean isDisabled(Task task) {
 
-        if (task instanceof AbstractProject) {
-            AbstractProject project = (AbstractProject) task;
+        if (task instanceof SubTask) {
+            task = task.getOwnerTask();
+        }
+
+        if (task instanceof Job) {
+            Job job = (Job) task;
             @SuppressWarnings("unchecked")
-            LeastLoadDisabledProperty property = (LeastLoadDisabledProperty) project.getProperty(LeastLoadDisabledProperty.class);
+            LeastLoadDisabledProperty property = (LeastLoadDisabledProperty) job.getProperty(LeastLoadDisabledProperty.class);
             // If the job configuration hasn't been saved after installing the plugin, the property will be null. Assume
             // that the user wants to enable functionality by default.
             if (property != null) {

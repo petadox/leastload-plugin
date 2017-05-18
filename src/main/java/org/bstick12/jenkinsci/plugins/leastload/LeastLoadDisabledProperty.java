@@ -24,9 +24,9 @@
 package org.bstick12.jenkinsci.plugins.leastload;
 
 import hudson.Extension;
+import hudson.model.Job;
 import hudson.model.JobProperty;
 import hudson.model.JobPropertyDescriptor;
-import hudson.model.AbstractProject;
 
 import org.kohsuke.stapler.DataBoundConstructor;
 
@@ -36,7 +36,7 @@ import org.kohsuke.stapler.DataBoundConstructor;
  *
  * @author brendan.nolan@gmail.com
  */
-public class LeastLoadDisabledProperty extends JobProperty<AbstractProject<?, ?>> {
+public class LeastLoadDisabledProperty extends JobProperty<Job<?, ?>> {
 
     private final boolean leastLoadDisabled;
 
