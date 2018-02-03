@@ -24,41 +24,39 @@
 package org.bstick12.jenkinsci.plugins.leastload;
 
 import hudson.Extension;
+import hudson.model.Job;
 import hudson.model.JobProperty;
 import hudson.model.JobPropertyDescriptor;
-import hudson.model.AbstractProject;
 
 import org.kohsuke.stapler.DataBoundConstructor;
 
 /**
- * 
  * {@link JobProperty} that also disabling of the {@link LeastLoadBalancer} on a per
  * job basis
- * 
- * @author brendan.nolan@gmail.com
  *
+ * @author brendan.nolan@gmail.com
  */
-public class LeastLoadDisabledProperty extends JobProperty<AbstractProject<?,?>> {
+public class LeastLoadDisabledProperty extends JobProperty<Job<?, ?>> {
 
-	private final boolean leastLoadDisabled;
-	
-	@DataBoundConstructor
-	public LeastLoadDisabledProperty(boolean leastLoadDisabled) {
-		this.leastLoadDisabled = leastLoadDisabled;
-	}
-	
-	public boolean isLeastLoadDisabled() {
-		return leastLoadDisabled;
-	}
-	
-	@Extension
-	public static class DescriptorImpl extends JobPropertyDescriptor {
+    private final boolean leastLoadDisabled;
 
-		@Override
-		public String getDisplayName() {
-			return "Least Load Disabled Property";
-		}
+    @DataBoundConstructor
+    public LeastLoadDisabledProperty(boolean leastLoadDisabled) {
+        this.leastLoadDisabled = leastLoadDisabled;
+    }
 
-	}
-	
+    public boolean isLeastLoadDisabled() {
+        return leastLoadDisabled;
+    }
+
+    @Extension
+    public static class DescriptorImpl extends JobPropertyDescriptor {
+
+        @Override
+        public String getDisplayName() {
+            return "Least Load Disabled Property";
+        }
+
+    }
+
 }
