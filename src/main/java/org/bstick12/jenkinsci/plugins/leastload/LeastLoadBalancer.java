@@ -1,18 +1,18 @@
 /*
  * The MIT License
- * 
+ *
  * Copyright (c) 2013, Brendan Nolan
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -23,34 +23,32 @@
  */
 package org.bstick12.jenkinsci.plugins.leastload;
 
-import static java.util.logging.Level.FINE;
-import static java.util.logging.Level.WARNING;
-
-import hudson.model.LoadBalancer;
-import hudson.model.Job;
+import com.google.common.base.Preconditions;
 import hudson.model.Computer;
 import hudson.model.Executor;
+import hudson.model.Job;
+import hudson.model.LoadBalancer;
 import hudson.model.Queue.Task;
 import hudson.model.queue.MappingWorksheet;
 import hudson.model.queue.MappingWorksheet.ExecutorChunk;
 import hudson.model.queue.MappingWorksheet.Mapping;
+import hudson.model.queue.SubTask;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Logger;
 
-import com.google.common.base.Preconditions;
-import hudson.model.queue.SubTask;
+import static java.util.logging.Level.FINE;
+import static java.util.logging.Level.WARNING;
 
 /**
  * A {@link LoadBalancer} implementation that the leastload plugin uses to replace the default
  * Jenkins {@link LoadBalancer}
- * <p>
  * <p>The {@link LeastLoadBalancer} chooses {@link Executor}s that have the least load. An {@link Executor} is defined
  * as having the least load if it is idle or has the most available {@link Executor}s
- * <p>
  * <p>If for any reason we are unsuccessful in creating a {@link Mapping} we fall back on the default Jenkins
  * {@link LoadBalancer#CONSISTENT_HASH} and try to use that.
  *
@@ -67,6 +65,8 @@ public class LeastLoadBalancer extends LoadBalancer {
     /**
      * Create the {@link LeastLoadBalancer} with a fallback that will be
      * used in case of any failures.
+     *
+     * @param fallback The LoadBalancer fallback to use in case of failure
      */
     public LeastLoadBalancer(LoadBalancer fallback) {
         Preconditions.checkNotNull(fallback, "You must provide a fallback implementation of the LoadBalancer");
@@ -123,11 +123,9 @@ public class LeastLoadBalancer extends LoadBalancer {
     @SuppressWarnings("rawtypes")
     private boolean isDisabled(Task task) {
 
-        if (task instanceof SubTask) {
-            task = task.getOwnerTask();
-        }
+        SubTask subTask = task.getOwnerTask();
 
-        if (task instanceof Job) {
+        if (subTask instanceof Job) {
             Job job = (Job) task;
             @SuppressWarnings("unchecked")
             LeastLoadDisabledProperty property = (LeastLoadDisabledProperty) job.getProperty(LeastLoadDisabledProperty.class);
@@ -164,13 +162,13 @@ public class LeastLoadBalancer extends LoadBalancer {
     /**
      * Retrieves the fallback {@link LoadBalancer}
      *
-     * @return
+     * @return - fallback LoadBalancer
      */
     public LoadBalancer getFallBackLoadBalancer() {
         return fallback;
     }
 
-    protected static class ExecutorChunkComparator implements Comparator<ExecutorChunk> {
+    protected static class ExecutorChunkComparator implements Comparator<ExecutorChunk>, Serializable {
 
         public int compare(ExecutorChunk ec1, ExecutorChunk ec2) {
 
@@ -198,6 +196,5 @@ public class LeastLoadBalancer extends LoadBalancer {
         }
 
     }
-
 
 }

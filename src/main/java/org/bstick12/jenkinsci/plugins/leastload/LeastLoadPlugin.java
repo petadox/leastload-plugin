@@ -36,9 +36,10 @@ public class LeastLoadPlugin extends Plugin {
 
     @Override
     public void start() throws Exception {
-        LoadBalancer currentLoadBalancer = Jenkins.getInstance().getQueue().getLoadBalancer();
+        final Jenkins activeInstance = Jenkins.getActiveInstance();
+        LoadBalancer currentLoadBalancer = activeInstance.getQueue().getLoadBalancer();
         LoadBalancer leastLoadBalancer = new LeastLoadBalancer(currentLoadBalancer);
-        Jenkins.getInstance().getQueue().setLoadBalancer(leastLoadBalancer);
+        activeInstance.getQueue().setLoadBalancer(leastLoadBalancer);
     }
 
 }
