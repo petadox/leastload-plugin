@@ -8,4 +8,4 @@ executors.
 
 https://wiki.jenkins-ci.org/display/JENKINS/Least+Load+Plugin
 
-
+[![Build Status](https://ci.jenkins.io/job/Plugins/job/leastload-plugin/job/master/badge/icon)](https://ci.jenkins.io/job/Plugins/job/leastload-plugin/job/master/)
