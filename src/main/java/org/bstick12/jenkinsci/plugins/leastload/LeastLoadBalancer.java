@@ -126,7 +126,7 @@ public class LeastLoadBalancer extends LoadBalancer {
         SubTask subTask = task.getOwnerTask();
 
         if (subTask instanceof Job) {
-            Job job = (Job) task;
+            Job job = (Job) subTask;
             @SuppressWarnings("unchecked")
             LeastLoadDisabledProperty property = (LeastLoadDisabledProperty) job.getProperty(LeastLoadDisabledProperty.class);
             // If the job configuration hasn't been saved after installing the plugin, the property will be null. Assume
