@@ -7,7 +7,7 @@
 	</parent>
 
 	<artifactId>leastload</artifactId>
-	<version>1.1.1</version>
+	<version>1.2.0-SNAPSHOT</version>
 	<packaging>hpi</packaging>
 
 	<name>Least Load plugin</name>
@@ -33,7 +33,7 @@
 		<connection>scm:git:ssh://github.com/jenkinsci/leastload-plugin.git</connection>
 		<developerConnection>scm:git:ssh://git@github.com/jenkinsci/leastload-plugin.git</developerConnection>
 		<url>https://github.com/jenkinsci/leastload-plugin</url>
-    <tag>leastload-1.1.1</tag>
+    <tag>HEAD</tag>
   </scm>
 
 	<repositories>
